@@ -11,7 +11,7 @@ import androidx.navigation.NavHostController
 @Composable
 fun HomeActivity(modifier: Modifier, navController: NavHostController) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
     ) {
         Text(
             text = "Hello Home"
