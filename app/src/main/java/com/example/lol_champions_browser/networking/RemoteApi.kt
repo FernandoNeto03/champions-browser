@@ -3,6 +3,7 @@ package com.example.lol_champions_browser.networking
 import android.util.Log
 import com.example.lol_champions_browser.model.ChampionModel
 import com.example.lol_champions_browser.model.ChampionStatsModel
+import com.google.gson.Gson
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -84,7 +85,6 @@ class RemoteApi {
                     }
                 }
 
-                Log.d(TAG, "Champions: $championList")
             }
 
         } catch (e: Exception) {
@@ -158,8 +158,6 @@ class RemoteApi {
                     )
                     championList.add(championObject)
                 }
-
-                Log.d(TAG, "All Champions: $championList")
             }
 
         } catch (e: Exception) {

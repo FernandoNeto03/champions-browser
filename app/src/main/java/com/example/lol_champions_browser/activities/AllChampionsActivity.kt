@@ -1,6 +1,5 @@
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -13,24 +12,25 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.lol_champions_browser.R
+import com.example.lol_champions_browser.ViewModel.ChampionViewModel
 import com.example.lol_champions_browser.model.ChampionModel
 import com.example.lol_champions_browser.networking.RemoteApi
 import com.example.lol_champions_browser.ui.theme.FeraDemais
 import com.example.lol_champions_browser.ui.theme.GoldLol
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
 
 @Composable
-fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController) {
-    val context = LocalContext.current
+fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController, viewModel: ChampionViewModel = viewModel()) {
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
 
     LaunchedEffect(Unit) {
@@ -72,13 +72,8 @@ fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostCo
                         .height(200.dp)
                         .border(width = 2.dp, color = FeraDemais)
                         .clickable {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "Campeão fera demaisssss: ${champion.name}",
-                                    Toast.LENGTH_SHORT
-                                )
-                                .show()
+                            viewModel.selectChampion(champion)
+                            navController.navigate("championDetail")
                         },
                 ) {
                     Box(modifier = Modifier.fillMaxSize()) {
