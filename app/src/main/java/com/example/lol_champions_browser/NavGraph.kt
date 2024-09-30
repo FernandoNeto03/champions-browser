@@ -14,7 +14,6 @@ import com.example.lol_champions_browser.activities.ChampionDetailActivity
 import com.example.lol_champions_browser.activities.ChampionsByTagActivity
 import com.example.lol_champions_browser.activities.HomeActivity
 import com.example.lol_champions_browser.model.ChampionModel
-import com.google.gson.Gson
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
@@ -28,6 +27,13 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         composable(route = "home") { HomeActivity(navController) }
         composable(route = "championDetail") {
             ChampionDetailActivity(modifier, championViewModel)
+        }
+        composable(
+            route = "tagChampions/{tag}",
+            arguments = listOf(navArgument("tag") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val tag = backStackEntry.arguments?.getString("tag") ?: ""
+            ChampionsByTagActivity(tag = tag, modifier = modifier, navController = navController)
         }
     })
 }
