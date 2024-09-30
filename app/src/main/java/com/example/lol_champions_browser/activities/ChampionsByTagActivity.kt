@@ -19,8 +19,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.lol_champions_browser.R
+import com.example.lol_champions_browser.ViewModel.ChampionViewModel
 import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.model.ChampionModel
@@ -34,7 +36,12 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 @Composable
-fun ChampionsByTagActivity(tag: String, modifier: Modifier, navController: NavHostController) {
+fun ChampionsByTagActivity(
+    tag: String,
+    modifier: Modifier,
+    navController: NavHostController,
+    viewModel: ChampionViewModel = viewModel()
+) {
     val context = LocalContext.current
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
 
@@ -91,13 +98,8 @@ fun ChampionsByTagActivity(tag: String, modifier: Modifier, navController: NavHo
                                     .height(200.dp)
                                     .border(width = 2.dp, color = FeraDemais)
                                     .clickable {
-                                        Toast
-                                            .makeText(
-                                                context,
-                                                "Campeão fera demaisssss: ${champion.name}",
-                                                Toast.LENGTH_SHORT
-                                            )
-                                            .show()
+                                        viewModel.selectChampion(champion)
+                                        navController.navigate("championDetail")
                                     },
                             ) {
                                 Box(modifier = Modifier.fillMaxSize()) {

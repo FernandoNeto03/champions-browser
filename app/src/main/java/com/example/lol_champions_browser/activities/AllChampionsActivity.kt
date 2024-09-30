@@ -1,5 +1,6 @@
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -78,7 +79,7 @@ fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostCo
                                 loadImageFromUrl(champion.icon)
                             }
                         }
-
+                        Log.d("TAG", "AllChampionsActivity: $champion")
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
