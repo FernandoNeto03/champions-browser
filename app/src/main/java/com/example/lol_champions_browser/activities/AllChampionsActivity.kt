@@ -1,13 +1,12 @@
-package com.example.lol_champions_browser.activities
-
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -15,17 +14,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.lol_champions_browser.R
 import com.example.lol_champions_browser.model.ChampionModel
 import com.example.lol_champions_browser.networking.RemoteApi
+import com.example.lol_champions_browser.ui.theme.FeraDemais
+import com.example.lol_champions_browser.ui.theme.GoldLol
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
 
 @Composable
-fun AllChampionsActivity(modifier: Modifier, navController: NavHostController) {
+fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController) {
     val context = LocalContext.current
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
 
@@ -35,15 +39,25 @@ fun AllChampionsActivity(modifier: Modifier, navController: NavHostController) {
         }
     }
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        if (championList.isEmpty()) {
-            item { Text(text = "Carregando campeões...") }
-        } else {
-            items(championList) { champion ->
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(id = R.drawable.preview),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            contentPadding = PaddingValues(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(championList.size) { index ->
+                val champion = championList[index]
                 var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
 
                 LaunchedEffect(champion.icon) {
@@ -55,7 +69,8 @@ fun AllChampionsActivity(modifier: Modifier, navController: NavHostController) {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .height(200.dp)
+                        .border(width = 2.dp, color = FeraDemais)
                         .clickable {
                             Toast
                                 .makeText(
@@ -66,23 +81,34 @@ fun AllChampionsActivity(modifier: Modifier, navController: NavHostController) {
                                 .show()
                         },
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.Start
-                    ) {
+                    Box(modifier = Modifier.fillMaxSize()) {
                         imageBitmap?.let {
                             Image(
                                 bitmap = it.asImageBitmap(),
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(64.dp)
-                                    .padding(end = 8.dp),
+                                modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Crop
                             )
                         }
-                        Text(text = champion.name)
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            verticalArrangement = Arrangement.Bottom
+                        ) {
+                            Text(
+                                text = champion.name,
+                                color = GoldLol,
+                                fontWeight = FontWeight.Bold,
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = champion.title,
+                                color = GoldLol,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
                     }
                 }
             }

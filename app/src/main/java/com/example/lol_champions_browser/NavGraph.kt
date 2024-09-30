@@ -1,5 +1,6 @@
 package com.example.lol_champions_browser
 
+import AllChampionsActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -7,7 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.lol_champions_browser.activities.AllChampionsActivity
 import com.example.lol_champions_browser.activities.ChampionsByTagActivity
 import com.example.lol_champions_browser.activities.HomeActivity
 

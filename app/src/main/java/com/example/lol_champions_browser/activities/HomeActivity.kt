@@ -1,15 +1,20 @@
 package com.example.lol_champions_browser.activities
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.TextButton
+import com.example.lol_champions_browser.R
+import com.example.lol_champions_browser.ui.theme.GoldLol
+import com.example.lol_champions_browser.ui.theme.SuperBlue
+import com.example.lol_champions_browser.ui.theme.teste
 
 @Composable
 fun HomeActivity(navController: NavHostController) {
@@ -17,59 +22,102 @@ fun HomeActivity(navController: NavHostController) {
     var selectedTag by remember { mutableStateOf("") }
     val tags = listOf("Tank", "Mage", "Assassin", "Marksman", "Support", "Fighter")
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Button(
-            onClick = {
-                navController.navigate("allChampions")
-            },
+        Image(
+            painter = painterResource(id = R.drawable.preview),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Ver todos os campeões")
+            Button(
+                onClick = {
+                    navController.navigate("allChampions")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = SuperBlue,
+                    contentColor = GoldLol
+                )
+            ) {
+                Text(text = "Ver todos os campeões")
+            }
+
+            Button(
+                onClick = {
+                    showDialog = true
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = SuperBlue,
+                    contentColor = GoldLol
+                )
+            ) {
+                Text(text = "Ver campeões por função")
+            }
         }
 
-        Button(
-            onClick = {
-                showDialog = true
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            Text(text = "Ver campeões por função")
-        }
-    }
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            title = { Text(text = "Selecione uma função") },
-            text = {
-                Column {
-                    tags.forEach { tag ->
-                        TextButton(
-                            onClick = {
-                                selectedTag = tag
-                                showDialog = false
-                                navController.navigate("tagChampions/${tag}")
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = {
+                    Text(
+                        text = "Selecione uma função",
+                        color = GoldLol
+                    )
+                },
+                text = {
+                    Column {
+                        tags.forEach { tag ->
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(4.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = SuperBlue
+                                )
+                            ) {
+                                TextButton(
+                                    onClick = {
+                                        selectedTag = tag
+                                        showDialog = false
+                                        navController.navigate("tagChampions/$tag")
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = tag,
+                                        color = GoldLol
+                                    )
+                                }
                             }
-                        ) {
-                            Text(text = tag)
                         }
                     }
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = { showDialog = false }) {
-                    Text(text = "Cancelar")
-                }
-            }
-        )
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = { showDialog = false },
+                        colors = ButtonDefaults.textButtonColors(contentColor = Color.White)
+                    ) {
+                        Text(text = "Cancelar")
+                    }
+                },
+                containerColor = teste,
+                titleContentColor = GoldLol
+            )
+        }
     }
 }
