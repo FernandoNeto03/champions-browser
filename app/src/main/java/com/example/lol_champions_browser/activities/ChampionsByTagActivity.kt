@@ -1,8 +1,8 @@
 package com.example.lol_champions_browser.activities
 
+import RemoteApi
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,7 +26,6 @@ import com.example.lol_champions_browser.ViewModel.ChampionViewModel
 import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.model.ChampionModel
-import com.example.lol_champions_browser.networking.RemoteApi
 import com.example.lol_champions_browser.ui.theme.FeraDemais
 import com.example.lol_champions_browser.ui.theme.GoldLol
 import com.example.lol_champions_browser.ui.theme.SuperBlue
@@ -47,7 +46,7 @@ fun ChampionsByTagActivity(
 
     LaunchedEffect(tag) {
         championList = withContext(Dispatchers.IO) {
-            RemoteApi().getChampionsByTag(tag)
+            RemoteApi(context).getChampionsByTag(tag)
         }
     }
 

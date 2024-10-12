@@ -1,6 +1,5 @@
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,7 +24,6 @@ import com.example.lol_champions_browser.ViewModel.ChampionViewModel
 import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.model.ChampionModel
-import com.example.lol_champions_browser.networking.RemoteApi
 import com.example.lol_champions_browser.ui.theme.FeraDemais
 import com.example.lol_champions_browser.ui.theme.GoldLol
 import com.example.lol_champions_browser.ui.theme.SuperBlue
@@ -36,10 +35,10 @@ import java.net.URL
 @Composable
 fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController, viewModel: ChampionViewModel = viewModel()) {
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
-
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         championList = withContext(Dispatchers.IO) {
-            RemoteApi().getAllChampions()
+            RemoteApi(context).getAllChampions()
         }
     }
 
@@ -79,7 +78,6 @@ fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostCo
                                 loadImageFromUrl(champion.icon)
                             }
                         }
-                        Log.d("TAG", "AllChampionsActivity: $champion")
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
