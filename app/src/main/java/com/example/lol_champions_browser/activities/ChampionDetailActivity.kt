@@ -2,9 +2,11 @@ package com.example.lol_champions_browser.activities
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.MediaPlayer
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -49,6 +52,9 @@ import java.net.URL
 @Composable
 fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionViewModel = viewModel()) {
     val champion = viewModel.selectedChampion
+    val context = LocalContext.current
+    var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
+
     Log.d("TAG", "ChampionDetailActivity: $champion")
 
     SystemBarColor(SuperBlue)
@@ -86,7 +92,25 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                 ) {
                     Card(
                         modifier = Modifier
-                            .size(120.dp), // Set size to 120x120
+                            .size(120.dp)
+                            .clickable {
+                                mediaPlayer?.stop()
+                                mediaPlayer?.release()
+
+                                val audioResId = context.resources.getIdentifier(champ.id, "raw", context.packageName)
+                                if (audioResId != 0) {
+                                    mediaPlayer = MediaPlayer.create(context, audioResId)
+                                    mediaPlayer?.start()
+
+
+                                    mediaPlayer?.setOnCompletionListener {
+                                        mediaPlayer?.release()
+                                        mediaPlayer = null
+                                    }
+                                } else {
+                                    Log.e("TAG", "Arquivo de áudio não encontrado para o campeão: ${champ.id}")
+                                }
+                            },
                         shape = RoundedCornerShape(12.dp),
                     ) {
                         imageBitmap?.let {
@@ -143,6 +167,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -151,13 +176,29 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(text = "HP: ${champ.stats.hp}", fontSize = 14.sp)
+                        Text(text = "HP por nível: ${champ.stats.hpPerLevel}", fontSize = 14.sp)
                         Text(text = "MP: ${champ.stats.mp}", fontSize = 14.sp)
+                        Text(text = "MP por nível: ${champ.stats.mpPerLevel}", fontSize = 14.sp)
+                        Text(text = "Velocidade de Movimento: ${champ.stats.moveSpeed}", fontSize = 14.sp)
+                        Text(text = "Armadura: ${champ.stats.armor}", fontSize = 14.sp)
+                        Text(text = "Armadura por nível: ${champ.stats.armorPerLevel}", fontSize = 14.sp)
+                        Text(text = "Bloqueio de feitiço: ${champ.stats.spellBlock}", fontSize = 14.sp)
+                        Text(text = "Bloqueio de feitiço por nível: ${champ.stats.spellBlockPerLevel}", fontSize = 14.sp)
                     }
                     Column(
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text(text = "Velocidade de Movimento: ${champ.stats.moveSpeed}", fontSize = 14.sp)
+                        Text(text = "Alcance de ataque: ${champ.stats.attackRange}", fontSize = 14.sp)
+                        Text(text = "Regeneração de HP: ${champ.stats.hpRegen}", fontSize = 14.sp)
+                        Text(text = "Regen. HP por nível: ${champ.stats.hpRegenPerLevel}", fontSize = 14.sp)
+                        Text(text = "Regeneração de MP: ${champ.stats.mpRegen}", fontSize = 14.sp)
+                        Text(text = "Regen. MP por nível: ${champ.stats.mpRegenPerLevel}", fontSize = 14.sp)
+                        Text(text = "Crítico: ${champ.stats.crit}", fontSize = 14.sp)
+                        Text(text = "Crítico por nível: ${champ.stats.critPerLevel}", fontSize = 14.sp)
                         Text(text = "Dano de Ataque: ${champ.stats.attackDamage}", fontSize = 14.sp)
+                        Text(text = "Dano de Ataque por nível: ${champ.stats.attackDamagePerLevel}", fontSize = 14.sp)
+                        Text(text = "Velocidade de Ataque: ${champ.stats.attackSpeed}", fontSize = 14.sp)
+                        Text(text = "Velocidade de Ataque por nível: ${champ.stats.attackSpeedPerLevel}", fontSize = 14.sp)
                     }
                 }
             }
@@ -189,4 +230,3 @@ private fun loadImageFromUrl(url: String): Bitmap? {
         null
     }
 }
-

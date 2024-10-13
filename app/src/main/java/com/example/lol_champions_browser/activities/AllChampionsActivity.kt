@@ -1,3 +1,5 @@
+import android.annotation.SuppressLint
+import android.media.MediaPlayer
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
@@ -32,10 +34,13 @@ import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
 
+@SuppressLint("DiscouragedApi")
 @Composable
 fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController, viewModel: ChampionViewModel = viewModel()) {
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
     val context = LocalContext.current
+    var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
+
     LaunchedEffect(Unit) {
         championList = withContext(Dispatchers.IO) {
             RemoteApi(context).getAllChampions()
@@ -78,12 +83,23 @@ fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostCo
                                 loadImageFromUrl(champion.icon)
                             }
                         }
+
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp)
                                 .border(width = 2.dp, color = FeraDemais)
                                 .clickable {
+                                    mediaPlayer?.stop()
+                                    mediaPlayer?.release()
+
+                                    val audioResId = context.resources.getIdentifier(champion.id, "raw", context.packageName)
+
+                                    if (audioResId != 0) {
+                                        mediaPlayer = MediaPlayer.create(context, audioResId)
+                                        mediaPlayer?.start()
+                                    }
+
                                     viewModel.selectChampion(champion)
                                     navController.navigate("championDetail")
                                 },

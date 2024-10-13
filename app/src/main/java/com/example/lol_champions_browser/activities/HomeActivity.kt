@@ -1,6 +1,7 @@
 package com.example.lol_champions_browser.activities
 
 import android.content.Context
+import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -24,6 +25,15 @@ fun HomeActivity(navController: NavHostController) {
     var showDialog by remember { mutableStateOf(false) }
     var selectedTag by remember { mutableStateOf("") }
     val tags = listOf("Tank", "Mage", "Assassin", "Marksman", "Support", "Fighter")
+
+    LaunchedEffect(Unit) {
+        val mediaPlayer = MediaPlayer.create(context, R.raw.inicio)
+        mediaPlayer.start()
+
+        mediaPlayer.setOnCompletionListener {
+            mediaPlayer.release()
+        }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
