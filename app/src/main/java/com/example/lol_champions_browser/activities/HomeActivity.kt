@@ -27,11 +27,18 @@ fun HomeActivity(navController: NavHostController) {
     val tags = listOf("Tank", "Mage", "Assassin", "Marksman", "Support", "Fighter")
 
     LaunchedEffect(Unit) {
-        val mediaPlayer = MediaPlayer.create(context, R.raw.inicio)
-        mediaPlayer.start()
+        val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val hasPlayedAudio = sharedPreferences.getBoolean("has_played_audio", false)
 
-        mediaPlayer.setOnCompletionListener {
-            mediaPlayer.release()
+        if (!hasPlayedAudio) {
+            val mediaPlayer = MediaPlayer.create(context, R.raw.inicio)
+            mediaPlayer.start()
+
+            mediaPlayer.setOnCompletionListener {
+                mediaPlayer.release()
+
+                sharedPreferences.edit().putBoolean("has_played_audio", true).apply()
+            }
         }
     }
 
@@ -80,6 +87,35 @@ fun HomeActivity(navController: NavHostController) {
                 )
             ) {
                 Text(text = "Ver campeões por função")
+            }
+
+            Button(
+                onClick = {
+                    navController.navigate("drawTeam")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = SuperBlue,
+                    contentColor = GoldLol
+                )
+            ) {
+                Text(text = "Sorteador de time")
+            }
+            Button(
+                onClick = {
+                    navController.navigate("allItems")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = SuperBlue,
+                    contentColor = GoldLol
+                )
+            ) {
+                Text(text = "Ver todos os itens")
             }
         }
 

@@ -46,7 +46,6 @@ class RemoteApi(private val context: Context) {
             }
         }
 
-        // Se os dados forem antigos ou não existirem, faz o GET e atualiza o Shared Preferences
         val championList = mutableListOf<ChampionModel>()
 
         try {
@@ -112,7 +111,6 @@ class RemoteApi(private val context: Context) {
                 }
             }
 
-            // Salvando dados localmente e atualizando o timestamp
             val editor = sharedPreferences.edit()
             editor.putString(CHAMPION_DATA_KEY, Gson().toJson(championList))
             editor.putLong(TIMESTAMP_KEY, System.currentTimeMillis())
