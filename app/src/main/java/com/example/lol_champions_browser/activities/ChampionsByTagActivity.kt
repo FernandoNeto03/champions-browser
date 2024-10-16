@@ -1,6 +1,6 @@
 package com.example.lol_champions_browser.activities
 
-import RemoteApi
+import com.example.lol_champions_browser.networking.RemoteApi
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.lol_champions_browser.R
-import com.example.lol_champions_browser.ViewModel.ChampionViewModel
+import com.example.lol_champions_browser.viewmodel.ChampionViewModel
 import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.model.ChampionModel

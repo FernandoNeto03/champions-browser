@@ -1,3 +1,5 @@
+package com.example.lol_champions_browser.activities
+
 import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.graphics.Bitmap
@@ -22,10 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.lol_champions_browser.R
-import com.example.lol_champions_browser.ViewModel.ChampionViewModel
+import com.example.lol_champions_browser.viewmodel.ChampionViewModel
 import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.model.ChampionModel
+import com.example.lol_champions_browser.networking.RemoteApi
 import com.example.lol_champions_browser.ui.theme.FeraDemais
 import com.example.lol_champions_browser.ui.theme.GoldLol
 import com.example.lol_champions_browser.ui.theme.SuperBlue
@@ -33,6 +36,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
+
 
 @SuppressLint("DiscouragedApi")
 @Composable
@@ -45,6 +49,8 @@ fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostCo
         championList = withContext(Dispatchers.IO) {
             RemoteApi(context).getAllChampions()
         }
+//        if( ActivityCompat.checkSelfPermission(context, POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
+//        }
     }
 
     SystemBarColor(SuperBlue)

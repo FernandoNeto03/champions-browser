@@ -1,6 +1,10 @@
 [versions]
-agp = "8.5.1"
+accompanistPermissions = "<latest_version>"
+agp = "8.6.0"
+core = "1.10.1"
+coreKtxVersion = "1.10.1"
 coreSplashscreen = "1.0.1"
+coreVersion = "2.2.0"
 gson = "2.10.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
@@ -15,8 +19,12 @@ foundationLayoutAndroid = "1.6.6"
 uiTestAndroid = "1.7.0"
 
 [libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+androidx-core = { module = "androidx.core:core", version.ref = "coreVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-ktx-v1101 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-core-v1101 = { module = "androidx.core:core", version.ref = "core" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

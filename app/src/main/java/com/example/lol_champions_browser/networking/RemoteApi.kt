@@ -1,7 +1,10 @@
+package com.example.lol_champions_browser.networking
+
 import android.content.Context
 import android.util.Log
 import com.example.lol_champions_browser.model.ChampionModel
 import com.example.lol_champions_browser.model.ChampionStatsModel
+import com.example.lol_champions_browser.viewmodel.NotificationViewModel
 import com.google.gson.Gson
 import org.json.JSONArray
 import java.io.BufferedReader
@@ -15,10 +18,11 @@ import java.util.Locale
 class RemoteApi(private val context: Context) {
 
     private val BASE_URL = "http://girardon.com.br:3001/champions"
-    private val TAG = "RemoteApi"
+    private val TAG = "com.example.lol_champions_browser.networking.RemoteApi"
     private val PREFS_NAME = "ChampionPrefs"
     private val CHAMPION_DATA_KEY = "championData"
     private val TIMESTAMP_KEY = "timestamp"
+    private val notificationViewModel = NotificationViewModel(context)
 
     private fun formatTimestamp(timestamp: Long): String {
         val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
@@ -39,7 +43,7 @@ class RemoteApi(private val context: Context) {
         if (currentTime - lastSavedTime < twoWeeksInMillis) {
             val savedChampionData = sharedPreferences.getString(CHAMPION_DATA_KEY, null)
             if (savedChampionData != null) {
-                Log.d(TAG, "Usando dados salvos localmente")
+                notificationViewModel.showBasicNotification() //Usando dados salvos localmente
                 return Gson().fromJson(savedChampionData, Array<ChampionModel>::class.java).toList()
             } else {
                 Log.d(TAG, "Nenhum dado encontrado no SharedPreferences")

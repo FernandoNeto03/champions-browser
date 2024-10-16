@@ -39,7 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.lol_champions_browser.ViewModel.ChampionViewModel
+import com.example.lol_champions_browser.viewmodel.ChampionViewModel
 import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.ui.theme.GoldLol
@@ -129,7 +129,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "Nome: ${champ.name}",
+                            text = "${champ.name}",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             color = GoldLol,
@@ -137,7 +137,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                         )
 
                         Text(
-                            text = "Título: ${champ.title}",
+                            text = "${champ.title}",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium,
                             color = SuperBlue,
