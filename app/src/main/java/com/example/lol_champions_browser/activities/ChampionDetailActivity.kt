@@ -6,8 +6,8 @@ import android.media.MediaPlayer
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,11 +34,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.lol_champions_browser.R
 import com.example.lol_champions_browser.viewmodel.ChampionViewModel
 import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
@@ -76,12 +78,21 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
     ) { innerPadding ->
         champion?.let { champ ->
 
+            Image(
+                painter = painterResource(id = R.drawable.preview),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+
             Column(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(innerPadding)
                     .padding(16.dp)
-                    .background(Color.White)
+                    .background(Color.LightGray)
+                    .border(1.dp, GoldLol, RoundedCornerShape(4.dp))
+                    .padding(8.dp)
             ) {
 
                 Row(
@@ -97,7 +108,11 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                                 mediaPlayer?.stop()
                                 mediaPlayer?.release()
 
-                                val audioResId = context.resources.getIdentifier(champ.id, "raw", context.packageName)
+                                val audioResId = context.resources.getIdentifier(
+                                    champ.id,
+                                    "raw",
+                                    context.packageName
+                                )
                                 if (audioResId != 0) {
                                     mediaPlayer = MediaPlayer.create(context, audioResId)
                                     mediaPlayer?.start()
@@ -108,7 +123,10 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                                         mediaPlayer = null
                                     }
                                 } else {
-                                    Log.e("TAG", "Arquivo de áudio não encontrado para o campeão: ${champ.id}")
+                                    Log.e(
+                                        "TAG",
+                                        "Arquivo de áudio não encontrado para o campeão: ${champ.id}"
+                                    )
                                 }
                             },
                         shape = RoundedCornerShape(12.dp),
@@ -168,37 +186,124 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                Column(
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Column(
-                        modifier = Modifier.weight(1f)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
                     ) {
-                        Text(text = "HP: ${champ.stats.hp}", fontSize = 14.sp)
-                        Text(text = "HP por nível: ${champ.stats.hpPerLevel}", fontSize = 14.sp)
-                        Text(text = "MP: ${champ.stats.mp}", fontSize = 14.sp)
-                        Text(text = "MP por nível: ${champ.stats.mpPerLevel}", fontSize = 14.sp)
-                        Text(text = "Velocidade de Movimento: ${champ.stats.moveSpeed}", fontSize = 14.sp)
-                        Text(text = "Armadura: ${champ.stats.armor}", fontSize = 14.sp)
-                        Text(text = "Armadura por nível: ${champ.stats.armorPerLevel}", fontSize = 14.sp)
-                        Text(text = "Bloqueio de feitiço: ${champ.stats.spellBlock}", fontSize = 14.sp)
-                        Text(text = "Bloqueio de feitiço por nível: ${champ.stats.spellBlockPerLevel}", fontSize = 14.sp)
+                        Image(
+                            painter = painterResource(id = R.drawable.health),
+                            contentDescription = "HP Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Pontos de vida: ${champ.stats.hp}", fontSize = 14.sp)
                     }
-                    Column(
-                        modifier = Modifier.weight(1f)
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
                     ) {
-                        Text(text = "Alcance de ataque: ${champ.stats.attackRange}", fontSize = 14.sp)
-                        Text(text = "Regeneração de HP: ${champ.stats.hpRegen}", fontSize = 14.sp)
-                        Text(text = "Regen. HP por nível: ${champ.stats.hpRegenPerLevel}", fontSize = 14.sp)
-                        Text(text = "Regeneração de MP: ${champ.stats.mpRegen}", fontSize = 14.sp)
-                        Text(text = "Regen. MP por nível: ${champ.stats.mpRegenPerLevel}", fontSize = 14.sp)
-                        Text(text = "Crítico: ${champ.stats.crit}", fontSize = 14.sp)
-                        Text(text = "Crítico por nível: ${champ.stats.critPerLevel}", fontSize = 14.sp)
-                        Text(text = "Dano de Ataque: ${champ.stats.attackDamage}", fontSize = 14.sp)
-                        Text(text = "Dano de Ataque por nível: ${champ.stats.attackDamagePerLevel}", fontSize = 14.sp)
+                        Image(
+                            painter = painterResource(id = R.drawable.ad),
+                            contentDescription = "AD Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Dano de ataque: ${champ.stats.attackDamage}", fontSize = 14.sp)
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.range),
+                            contentDescription = "Range Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Alcance de Ataque: ${champ.stats.attackRange}", fontSize = 14.sp)
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.`as`),
+                            contentDescription = "AD Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(text = "Velocidade de Ataque: ${champ.stats.attackSpeed}", fontSize = 14.sp)
-                        Text(text = "Velocidade de Ataque por nível: ${champ.stats.attackSpeedPerLevel}", fontSize = 14.sp)
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ap),
+                            contentDescription = "AP Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Poder de Habilidade: ${champ.stats.attackDamage}", fontSize = 14.sp)
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.mana),
+                            contentDescription = "MP Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Pontos de Mana: ${champ.stats.mp}", fontSize = 14.sp)
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.armor),
+                            contentDescription = "Armadura Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Armadura: ${champ.stats.armor}", fontSize = 14.sp)
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.mr),
+                            contentDescription = "Bloqueio de Feitiço Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Resistência Mágica: ${champ.stats.spellBlock}", fontSize = 14.sp)
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.critchance),
+                            contentDescription = "Critic Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Crítico: ${champ.stats.crit}", fontSize = 14.sp)
                     }
                 }
             }
