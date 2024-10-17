@@ -1,3 +1,5 @@
+package com.example.lol_champions_browser.activities
+
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap

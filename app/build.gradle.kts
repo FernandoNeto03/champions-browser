@@ -50,7 +50,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.gson)
     implementation(libs.androidx.core.v1101)
     implementation(libs.androidx.core.ktx.v1101)
@@ -61,15 +60,18 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.ui.test.android)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.foundation.layout.android)
+
     implementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
     debugImplementation(libs.androidx.ui.test.manifest)
     debugImplementation(libs.androidx.ui.tooling)
 }

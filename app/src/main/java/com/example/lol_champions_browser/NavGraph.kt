@@ -1,7 +1,5 @@
 package com.example.lol_champions_browser
 
-import AllItemsActivity
-import DrawTeamActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -15,8 +13,8 @@ import com.example.lol_champions_browser.activities.AllChampionsActivity
 import com.example.lol_champions_browser.viewmodel.ChampionViewModel
 import com.example.lol_champions_browser.activities.ChampionDetailActivity
 import com.example.lol_champions_browser.activities.ChampionsByTagActivity
+import com.example.lol_champions_browser.activities.DrawTeamActivity
 import com.example.lol_champions_browser.activities.HomeActivity
-import com.example.lol_champions_browser.activities.ItemDetailActivity
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
@@ -37,14 +35,6 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         ) { backStackEntry ->
             val tag = backStackEntry.arguments?.getString("tag") ?: ""
             ChampionsByTagActivity(tag = tag, modifier = modifier, navController = navController)
-        }
-
-        composable("allItems") {
-            AllItemsActivity(navController = navController)
-        }
-
-        composable(route = "itemDetail") {
-            ItemDetailActivity()
         }
 
         composable("drawTeam") {
