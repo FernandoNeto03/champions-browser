@@ -43,7 +43,7 @@ import java.net.URL
 fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController, viewModel: ChampionViewModel = viewModel()) {
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
     val context = LocalContext.current
-    var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
+//    var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
 
     LaunchedEffect(Unit) {
         championList = withContext(Dispatchers.IO) {
@@ -96,15 +96,6 @@ fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostCo
                                 .height(200.dp)
                                 .border(width = 2.dp, color = FeraDemais)
                                 .clickable {
-                                    mediaPlayer?.stop()
-                                    mediaPlayer?.release()
-
-                                    val audioResId = context.resources.getIdentifier(champion.id, "raw", context.packageName)
-
-                                    if (audioResId != 0) {
-                                        mediaPlayer = MediaPlayer.create(context, audioResId)
-                                        mediaPlayer?.start()
-                                    }
 
                                     viewModel.selectChampion(champion)
                                     navController.navigate("championDetail")

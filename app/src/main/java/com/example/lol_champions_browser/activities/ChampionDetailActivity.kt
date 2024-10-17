@@ -105,29 +105,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                         modifier = Modifier
                             .size(120.dp)
                             .clickable {
-                                mediaPlayer?.stop()
-                                mediaPlayer?.release()
-
-                                val audioResId = context.resources.getIdentifier(
-                                    champ.id,
-                                    "raw",
-                                    context.packageName
-                                )
-                                if (audioResId != 0) {
-                                    mediaPlayer = MediaPlayer.create(context, audioResId)
-                                    mediaPlayer?.start()
-
-
-                                    mediaPlayer?.setOnCompletionListener {
-                                        mediaPlayer?.release()
-                                        mediaPlayer = null
-                                    }
-                                } else {
-                                    Log.e(
-                                        "TAG",
-                                        "Arquivo de áudio não encontrado para o campeão: ${champ.id}"
-                                    )
-                                }
+                              viewModel.playChampionSound(context, champion)
                             },
                         shape = RoundedCornerShape(12.dp),
                     ) {
@@ -147,7 +125,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "${champ.name}",
+                            text = "${champ?.name}",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             color = GoldLol,
@@ -155,7 +133,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                         )
 
                         Text(
-                            text = "${champ.title}",
+                            text = "${champ?.title}",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium,
                             color = SuperBlue,

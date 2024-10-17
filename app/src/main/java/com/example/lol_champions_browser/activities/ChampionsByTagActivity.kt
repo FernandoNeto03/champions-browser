@@ -98,6 +98,7 @@ fun ChampionsByTagActivity(
                                     .border(width = 2.dp, color = FeraDemais)
                                     .clickable {
                                         viewModel.selectChampion(champion)
+
                                         navController.navigate("championDetail")
                                     },
                             ) {
