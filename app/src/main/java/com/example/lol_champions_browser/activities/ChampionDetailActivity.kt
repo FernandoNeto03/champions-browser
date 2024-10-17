@@ -207,6 +207,19 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                         modifier = Modifier.padding(bottom = 4.dp)
                     ) {
                         Image(
+                            painter = painterResource(id = R.drawable.hpperlevel),
+                            contentDescription = "HP per level Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Vida por Level: ${champ.stats.hpPerLevel}", fontSize = 14.sp)
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Image(
                             painter = painterResource(id = R.drawable.ad),
                             contentDescription = "AD Icon",
                             modifier = Modifier.size(16.dp)
@@ -265,6 +278,19 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = "Pontos de Mana: ${champ.stats.mp}", fontSize = 14.sp)
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.movespeed),
+                            contentDescription = "MS Icon",
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Velocidade de Movimento: ${champ.stats.moveSpeed}", fontSize = 14.sp)
                     }
 
                     Row(

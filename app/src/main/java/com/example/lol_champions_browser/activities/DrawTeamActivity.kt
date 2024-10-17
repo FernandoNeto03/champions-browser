@@ -14,9 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.lol_champions_browser.R
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.model.ChampionModel
 import com.example.lol_champions_browser.networking.RemoteApi
@@ -63,39 +65,58 @@ fun DrawTeamActivity(navController: NavHostController, context: Context) {
             TopBarComponent("Sorteio de Equipes")
         },
         content = { paddingValues ->
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(paddingValues)
             ) {
-                Text(
-                    text = "Equipe 1",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(16.dp),
-                    color = GoldLol
+                Image(
+                    painter = painterResource(id = R.drawable.aram),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
                 )
-                TeamDisplay(team = team1)
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Equipe 1",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(16.dp),
+                        color = GoldLol
+                    )
+                    TeamDisplay(team = team1)
 
-                Text(
-                    text = "Equipe 2",
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(16.dp),
-                    color = GoldLol
-                )
-                TeamDisplay(team = team2)
+                    Spacer(modifier = Modifier.height(32.dp))
 
-                Button(onClick = {
-                    shareTeams(context, team1, team2)
-                }) {
-                    Text("Compartilhar Equipes")
+                    Button(
+                        onClick = {
+                            shareTeams(context, team1, team2)
+                        },
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    ) {
+                        Text("Compartilhar Equipes")
+                    }
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Text(
+                        text = "Equipe 2",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(16.dp),
+                        color = GoldLol
+                    )
+                    TeamDisplay(team = team2)
                 }
             }
         }
     )
 }
+
 
 @Composable
 fun TeamDisplay(team: List<ChampionModel>) {
@@ -105,7 +126,7 @@ fun TeamDisplay(team: List<ChampionModel>) {
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
         ) {
             team.take(3).forEach { champion ->
                 ChampionCard(champion)
@@ -116,7 +137,7 @@ fun TeamDisplay(team: List<ChampionModel>) {
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
         ) {
             team.drop(3).forEach { champion ->
                 ChampionCard(champion)
