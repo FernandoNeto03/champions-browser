@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -54,7 +55,7 @@ fun ChampionsByTagActivity(
 
     Scaffold(
         topBar = {
-            TopBarComponent("Voltar")
+            TopBarComponent(stringResource(id = R.string.back))
         },
         content = { paddingValues ->
             Box(
@@ -79,7 +80,7 @@ fun ChampionsByTagActivity(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     if (championList.isEmpty()) {
-                        item { Text(text = "Carregando campeões...") }
+                        item { Text(text = stringResource(id = R.string.loadingChampions)) }
                     } else {
                         items(championList.size) { index ->
                             val champion = championList[index]

@@ -13,12 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.lol_champions_browser.R
 import com.example.lol_champions_browser.ui.theme.GoldLol
 import com.example.lol_champions_browser.ui.theme.SuperBlue
 import com.example.lol_champions_browser.ui.theme.teste
+import java.util.Locale
 
 @Composable
 fun HomeActivity(navController: NavHostController) {
@@ -26,6 +28,16 @@ fun HomeActivity(navController: NavHostController) {
     var showDialog by remember { mutableStateOf(false) }
     var selectedTag by remember { mutableStateOf("") }
     val tags = listOf("Tank", "Mage", "Assassin", "Marksman", "Support", "Fighter")
+
+    val tagTranslations = mapOf(
+        "Tank" to stringResource(id = R.string.tank),
+        "Mage" to stringResource(id = R.string.mage),
+        "Assassin" to stringResource(id = R.string.assassin),
+        "Marksman" to stringResource(id = R.string.marksman),
+        "Support" to stringResource(id = R.string.support),
+        "Fighter" to stringResource(id = R.string.fighter)
+    )
+    val isPortuguese = Locale.getDefault().language == "pt"
 
     LaunchedEffect(Unit) {
         val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
@@ -72,7 +84,7 @@ fun HomeActivity(navController: NavHostController) {
                     contentColor = GoldLol
                 )
             ) {
-                Text(text = "Ver todos os campeões")
+                Text(text = stringResource(id = R.string.viewAllChampions))
             }
 
             Button(
@@ -87,7 +99,7 @@ fun HomeActivity(navController: NavHostController) {
                     contentColor = GoldLol
                 )
             ) {
-                Text(text = "Ver campeões por função")
+                Text(text = stringResource(id = R.string.viewChampionsByRole))
             }
 
             Button(
@@ -102,7 +114,7 @@ fun HomeActivity(navController: NavHostController) {
                     contentColor = GoldLol
                 )
             ) {
-                Text(text = "Sorteador de time")
+                Text(text = stringResource(id = R.string.teamDrawer))
             }
             Button(
                 onClick = {
@@ -116,16 +128,18 @@ fun HomeActivity(navController: NavHostController) {
                     contentColor = GoldLol
                 )
             ) {
-                Text(text = "Ver todos os itens")
+                Text(text = stringResource(id = R.string.viewAllItems))
             }
         }
+
+        val displayedTags = tags.map { tagTranslations[it] ?: it }
 
         if (showDialog) {
             AlertDialog(
                 onDismissRequest = { showDialog = false },
                 title = {
                     Text(
-                        text = "Selecione uma função",
+                        text = stringResource(id = R.string.selectOneRole),
                         color = GoldLol
                     )
                 },
@@ -149,10 +163,15 @@ fun HomeActivity(navController: NavHostController) {
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     Text(
-                                        text = tag,
+                                        text = if (isPortuguese) {
+                                            tagTranslations[tag] ?: tag
+                                        } else {
+                                            tag
+                                        },
                                         color = GoldLol
                                     )
                                 }
+
                             }
                         }
                     }
@@ -162,7 +181,7 @@ fun HomeActivity(navController: NavHostController) {
                         onClick = { showDialog = false },
                         colors = ButtonDefaults.textButtonColors(contentColor = Color.White)
                     ) {
-                        Text(text = "Cancelar")
+                        Text(text = stringResource(id = R.string.cancel))
                     }
                 },
                 containerColor = teste,

@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">lol-champions-browser</string>
+    <string name="viewAllChampions">Ver todos os campeões</string>
+    <string name="viewChampionsByRole">Ver campeões por função</string>
+    <string name="teamDrawer">Sorteador de equipe</string>
+    <string name="viewAllItems">Ver todos os itens</string>
+    <string name="selectOneRole">Selecionar uma função</string>
+    <string name="cancel">Cancelar</string>
+    <string name="back">Voltar</string>
+    <string name="championDetails">Detalhes do campeão</string>
+    <string name="attributes">Atributos</string>
+    <string name="championNotFound">Campeão não encontrado</string>
+    <string name="healthPoints">Pontos de Vida</string>
+    <string name="healthPerLevel">Vida por Nível</string>
+    <string name="attackDamage">Dano de Ataque</string>
+    <string name="attackRange">Alcance de Ataque</string>
+    <string name="attackSpeed">Velocidade de Ataque</string>
+    <string name="abilityPower">Poder de Habilidade</string>
+    <string name="manaPoints">Pontos de Mana</string>
+    <string name="movementSpeed">Velocidade de Movimento</string>
+    <string name="armor">Armadura</string>
+    <string name="magicResistance">Resistência Mágica</string>
+    <string name="critical">Crítico</string>
+    <string name="loadingChampions">Carregando campeões…</string>
+    <string name="teamOne">Time um</string>
+    <string name="teamTwo">Time dois</string>
+    <string name="shareTeams">Compartilhar times</string>
+    <string name="tank">Tanque</string>
+    <string name="mage">Mago</string>
+    <string name="assassin">Assassino</string>
+    <string name="marksman">Atirador</string>
+    <string name="support">Suporte</string>
+    <string name="fighter">Lutador</string>
+</resources>

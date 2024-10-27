@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -57,7 +58,17 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
     val context = LocalContext.current
     var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
 
-    Log.d("TAG", "ChampionDetailActivity: $champion")
+    val attributes = stringResource(id = R.string.attributes)
+    val healthPoints = stringResource(id = R.string.healthPoints)
+    val healthPerLevel = stringResource(id = R.string.healthPerLevel)
+    val attackDamage = stringResource(id = R.string.attackDamage)
+    val attackRange = stringResource(id = R.string.attackRange)
+    val attackSpeed = stringResource(id = R.string.attackSpeed)
+    val manaPoints = stringResource(id = R.string.manaPoints)
+    val abilityPower = stringResource(id = R.string.abilityPower)
+    val armor = stringResource(id = R.string.armor)
+    val magicResistance = stringResource(id = R.string.magicResistance)
+    val critical = stringResource(id = R.string.critical)
 
     SystemBarColor(SuperBlue)
 
@@ -73,7 +84,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
 
     Scaffold(
         topBar = {
-            TopBarComponent(text = "Detalhes do Campeão")
+            TopBarComponent(text =  stringResource(id = R.string.championDetails))
         }
     ) { innerPadding ->
         champion?.let { champ ->
@@ -125,7 +136,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "${champ?.name}",
+                            text = champ.name,
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             color = GoldLol,
@@ -133,7 +144,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                         )
 
                         Text(
-                            text = "${champ?.title}",
+                            text = champ.title,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium,
                             color = SuperBlue,
@@ -158,7 +169,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                 )
 
                 Text(
-                    text = "Atributos:",
+                    text = "$attributes:",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -177,9 +188,8 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Pontos de vida: ${champ.stats.hp}", fontSize = 14.sp)
+                        Text(text = "$healthPoints: ${champ.stats.hp}", fontSize = 14.sp)
                     }
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -190,9 +200,8 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Vida por Level: ${champ.stats.hpPerLevel}", fontSize = 14.sp)
+                        Text(text = "$healthPerLevel: ${champ.stats.hpPerLevel}", fontSize = 14.sp)
                     }
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -203,9 +212,8 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Dano de ataque: ${champ.stats.attackDamage}", fontSize = 14.sp)
+                        Text(text = "$attackDamage: ${champ.stats.attackDamage}", fontSize = 14.sp)
                     }
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -216,9 +224,8 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Alcance de Ataque: ${champ.stats.attackRange}", fontSize = 14.sp)
+                        Text(text = "$attackRange: ${champ.stats.attackRange}", fontSize = 14.sp)
                     }
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -229,9 +236,8 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Velocidade de Ataque: ${champ.stats.attackSpeed}", fontSize = 14.sp)
+                        Text(text = "$attackSpeed: ${champ.stats.attackSpeed}", fontSize = 14.sp)
                     }
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -242,9 +248,8 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Poder de Habilidade: ${champ.stats.attackDamage}", fontSize = 14.sp)
+                        Text(text = "$abilityPower: ${champ.stats.attackDamage}", fontSize = 14.sp)
                     }
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -255,9 +260,9 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Pontos de Mana: ${champ.stats.mp}", fontSize = 14.sp)
+                        Text(text = "$manaPoints: ${champ.stats.mp}", fontSize = 14.sp)
                     }
-
+                    val movementSpeed = stringResource(id = R.string.movementSpeed)
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -268,9 +273,8 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Velocidade de Movimento: ${champ.stats.moveSpeed}", fontSize = 14.sp)
+                        Text(text = "$movementSpeed: ${champ.stats.moveSpeed}", fontSize = 14.sp)
                     }
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -281,9 +285,8 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Armadura: ${champ.stats.armor}", fontSize = 14.sp)
+                        Text(text = "$armor: ${champ.stats.armor}", fontSize = 14.sp)
                     }
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -294,9 +297,8 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Resistência Mágica: ${champ.stats.spellBlock}", fontSize = 14.sp)
+                        Text(text = "$magicResistance: ${champ.stats.spellBlock}", fontSize = 14.sp)
                     }
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(bottom = 4.dp)
@@ -307,7 +309,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Crítico: ${champ.stats.crit}", fontSize = 14.sp)
+                        Text(text = "$critical: ${champ.stats.crit}", fontSize = 14.sp)
                     }
                 }
             }
@@ -318,7 +320,7 @@ fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionVie
                     .wrapContentSize(Alignment.Center)
             ) {
                 Text(
-                    text = "Campeão não encontrado",
+                    text = stringResource(id = R.string.championNotFound),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Red

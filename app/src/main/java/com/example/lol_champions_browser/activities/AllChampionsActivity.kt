@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -57,7 +58,7 @@ fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostCo
 
     Scaffold(
         topBar = {
-            TopBarComponent("Voltar")
+            TopBarComponent(stringResource(id = R.string.back))
         },
         content = { paddingValues ->
             Box(modifier = Modifier

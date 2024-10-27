@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">lol-champions-browser</string>
+    <string name="viewAllChampions">View all champions</string>
+    <string name="viewChampionsByRole">View champions by role</string>
+    <string name="teamDrawer">Team Drawer</string>
+    <string name="viewAllItems">View all items</string>
+    <string name="selectOneRole">Select one role</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="championDetails">Champion details</string>
+    <string name="attributes">Attributes</string>
+    <string name="championNotFound">Champion not found</string>
+    <string name="healthPoints">Health Points</string>
+    <string name="healthPerLevel">Health per Level</string>
+    <string name="attackDamage">Attack Damage</string>
+    <string name="attackRange">Attack Range</string>
+    <string name="attackSpeed">Attack Speed</string>
+    <string name="abilityPower">Ability Power</string>
+    <string name="manaPoints">Mana Points</string>
+    <string name="movementSpeed">Movement Speed</string>
+    <string name="armor">Armor</string>
+    <string name="magicResistance">Magic Resistance</string>
+    <string name="critical">Critical</string>
+    <string name="loadingChampions">Loading champions…</string>
+    <string name="teamOne">Team one</string>
+    <string name="teamTwo">Team two</string>
+    <string name="shareTeams">Share teams</string>
+    <string name="tank">Tank</string>
+    <string name="mage">Mage</string>
+    <string name="assassin">Assassin</string>
+    <string name="marksman">Marksman</string>
+    <string name="support">Support</string>
+    <string name="fighter">Fighter</string>
 </resources>

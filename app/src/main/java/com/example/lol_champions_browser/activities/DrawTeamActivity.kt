@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -50,6 +51,9 @@ fun DrawTeamActivity(navController: NavHostController, context: Context) {
     var team1 by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
     var team2 by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
 
+    val teamOne = stringResource(id = R.string.teamOne)
+    val teamTwo = stringResource(id = R.string.teamTwo)
+
     LaunchedEffect(Unit) {
         championList = withContext(Dispatchers.IO) {
             RemoteApi(context).getAllChampions()
@@ -64,7 +68,7 @@ fun DrawTeamActivity(navController: NavHostController, context: Context) {
 
     Scaffold(
         topBar = {
-            TopBarComponent("Sorteio de Equipes")
+            TopBarComponent(stringResource(id = R.string.teamDrawer))
         },
         content = { paddingValues ->
             Box(
@@ -86,7 +90,7 @@ fun DrawTeamActivity(navController: NavHostController, context: Context) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Equipe 1",
+                        text = teamOne,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(16.dp),
                         color = GoldLol
@@ -97,17 +101,17 @@ fun DrawTeamActivity(navController: NavHostController, context: Context) {
 
                     Button(
                         onClick = {
-                            shareTeams(context, team1, team2)
+                            shareTeams(context, team1, team2, teamOne, teamTwo)
                         },
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     ) {
-                        Text("Compartilhar Equipes")
+                        Text(stringResource(id = R.string.shareTeams))
                     }
 
                     Spacer(modifier = Modifier.height(32.dp))
 
                     Text(
-                        text = "Equipe 2",
+                        text = teamTwo,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(16.dp),
                         color = GoldLol
@@ -191,13 +195,13 @@ fun ChampionCard(champion: ChampionModel) {
     }
 }
 
-fun shareTeams(context: Context, team1: List<ChampionModel>, team2: List<ChampionModel>) {
+fun shareTeams(context: Context, team1: List<ChampionModel>, team2: List<ChampionModel>, teamOne: String, teamTwo: String) {
     val team1Names = team1.joinToString(", ") { it.name }
     val team2Names = team2.joinToString(", ") { it.name }
 
     val shareText = """
-        Equipe 1: $team1Names
-        Equipe 2: $team2Names
+        $teamOne: $team1Names
+        $teamTwo: $team2Names
     """.trimIndent()
 
     val intent = Intent(Intent.ACTION_SEND).apply {
