@@ -34,7 +34,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
             arguments = listOf(navArgument("tag") { type = NavType.StringType })
         ) { backStackEntry ->
             val tag = backStackEntry.arguments?.getString("tag") ?: ""
-            ChampionsByTagActivity(tag = tag, modifier = modifier, navController = navController)
+            ChampionsByTagActivity(tag = tag, modifier = modifier, navController = navController, championViewModel)
         }
 
         composable("drawTeam") {

@@ -40,7 +40,7 @@ fun ChampionsByTagActivity(
     tag: String,
     modifier: Modifier,
     navController: NavHostController,
-    viewModel: ChampionViewModel = viewModel()
+    viewModel: ChampionViewModel
 ) {
     val context = LocalContext.current
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }

@@ -53,7 +53,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 @Composable
-fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionViewModel = viewModel()) {
+fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionViewModel) {
     val champion = viewModel.selectedChampion
     val context = LocalContext.current
     var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }

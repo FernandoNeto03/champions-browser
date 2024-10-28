@@ -41,7 +41,7 @@ import java.net.URL
 
 @SuppressLint("DiscouragedApi")
 @Composable
-fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController, viewModel: ChampionViewModel = viewModel()) {
+fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController, viewModel: ChampionViewModel) {
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
     val context = LocalContext.current
 //    var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
