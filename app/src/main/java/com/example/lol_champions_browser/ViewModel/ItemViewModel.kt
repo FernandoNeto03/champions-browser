@@ -27,60 +27,58 @@
 
         var selectedItem by mutableStateOf<ItemModel?>(null)
 
+        var currentPage = 1
+        private var hasMorePages = true
+
         fun fetchItems() {
+            if (_isLoading.value || !hasMorePages) return
             _isLoading.value = true
             viewModelScope.launch {
                 val itemList = withContext(Dispatchers.IO) {
-                    fetchItemsFromApi()
+                    fetchItemsFromApi(currentPage)
                 }
-                _items.value = itemList
+                if (itemList.isNotEmpty()) {
+                    _items.value += itemList
+                    currentPage++
+                } else {
+                    hasMorePages = false
+                }
                 _isLoading.value = false
             }
         }
 
-//        fun selectItem(item: ItemModel) {
-//            Log.d("ItemViewModel", "Item selecionado: ${item.name}, ID: ${item.id}")
-//            selectedItem = item
-//        }
-
-        fun getItemById(itemId: String): ItemModel? {
-            val allItems = items.value
-            return allItems.find { item ->
-                item.id == itemId
-            }
-        }
-
-
-        private suspend fun fetchItemsFromApi(): List<ItemModel> {
-            val apiUrl = "https://ddragon.leagueoflegends.com/cdn/14.20.1/data/en_US/item.json"
+        private suspend fun fetchItemsFromApi(page: Int): List<ItemModel> {
+            val apiUrl = "http://girardon.com.br:3001/items?page=$page"
             val connection = URL(apiUrl).openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             connection.connect()
 
             val response = connection.inputStream.bufferedReader().use { it.readText() }
-            val json = JSONObject(response)
-            val data = json.getJSONObject("data")
+            val itemsArray = org.json.JSONArray(response)
 
             val items = mutableListOf<ItemModel>()
-            for (key in data.keys()) {
-                val itemJson = data.getJSONObject(key)
+            for (i in 0 until itemsArray.length()) {
+                val itemJson = itemsArray.getJSONObject(i)
                 val item = ItemModel(
-                    id = key,
+                    id = itemJson.getString("name"),
                     name = itemJson.getString("name"),
                     description = itemJson.getString("description"),
-                    image = ItemImage(itemJson.getJSONObject("image").getString("full")),
+                    image = ItemImage(itemJson.getString("icon")),
                     gold = ItemGold(
-                        base = itemJson.getJSONObject("gold").getInt("base"),
-                        total = itemJson.getJSONObject("gold").getInt("total"),
-                        sell = itemJson.getJSONObject("gold").getInt("sell"),
-                        purchasable = itemJson.getJSONObject("gold").getBoolean("purchasable")
+                        base = itemJson.getJSONObject("price").getInt("base"),
+                        total = itemJson.getJSONObject("price").getInt("total"),
+                        sell = itemJson.getJSONObject("price").getInt("sell"),
+                        purchasable = itemJson.getBoolean("purchasable")
                     ),
-                    tags = itemJson.getJSONArray("tags").let { array ->
-                        List(array.length()) { array.getString(it) }
-                    }
+                    tags = listOf()
                 )
                 items.add(item)
             }
             return items
+        }
+
+
+        fun getItemById(itemId: String): ItemModel? {
+            return items.value.find { item -> item.id == itemId }
         }
     }

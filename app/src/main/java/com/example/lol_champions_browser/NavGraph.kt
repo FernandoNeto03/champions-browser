@@ -46,7 +46,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
 
         composable("allItems") {
-        AllItemsActivity(navController = navController, viewModel = viewModel())
+        AllItemsActivity(navController = navController, viewModel = itemViewModel)
         }
 
         composable(

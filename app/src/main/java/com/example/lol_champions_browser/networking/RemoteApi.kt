@@ -30,30 +30,12 @@ class RemoteApi(private val context: Context) {
         return sdf.format(date)
     }
 
-    fun getAllChampions(): List<ChampionModel> {
-        val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-
-        val lastSavedTime = sharedPreferences.getLong(TIMESTAMP_KEY, 0)
-        val currentTime = System.currentTimeMillis()
-        val lastSavedTimeFormatted = formatTimestamp(lastSavedTime)
-        val currentTimeFormatted = formatTimestamp(currentTime)
-        val twoWeeksInMillis = 14 * 24 * 60 * 60 * 1000
-        Log.d(TAG, "Last saved time: $lastSavedTimeFormatted, Current time: $currentTimeFormatted")
-
-        if (currentTime - lastSavedTime < twoWeeksInMillis) {
-            val savedChampionData = sharedPreferences.getString(CHAMPION_DATA_KEY, null)
-            if (savedChampionData != null) {
-                notificationViewModel.showBasicNotification() //Usando dados salvos localmente
-                return Gson().fromJson(savedChampionData, Array<ChampionModel>::class.java).toList()
-            } else {
-                Log.d(TAG, "Nenhum dado encontrado no SharedPreferences")
-            }
-        }
-
+    fun getAllChampions(page: Int): List<ChampionModel> {
         val championList = mutableListOf<ChampionModel>()
+        val url = "$BASE_URL?page=$page"
 
         try {
-            val connection = URL(BASE_URL).openConnection() as HttpURLConnection
+            val connection = URL(url).openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             connection.setRequestProperty("Content-Type", "application/json")
             connection.setRequestProperty("Accept", "application/json")
@@ -115,11 +97,6 @@ class RemoteApi(private val context: Context) {
                 }
             }
 
-            val editor = sharedPreferences.edit()
-            editor.putString(CHAMPION_DATA_KEY, Gson().toJson(championList))
-            editor.putLong(TIMESTAMP_KEY, System.currentTimeMillis())
-            editor.apply()
-
         } catch (e: Exception) {
             Log.d(TAG, "In_Error ${e.localizedMessage}")
         }
@@ -127,11 +104,16 @@ class RemoteApi(private val context: Context) {
         return championList
     }
 
-
     fun getChampionsByTag(tag: String): List<ChampionModel> {
-        val allChampions = getAllChampions()
-        return allChampions.filter { champion ->
-            champion.tags.contains(tag)
-        }
+        var page = 1
+        val allChampions = mutableListOf<ChampionModel>()
+        var fetchedChampions: List<ChampionModel>
+
+        do {
+            fetchedChampions = getAllChampions(page++)
+            allChampions.addAll(fetchedChampions.filter { it.tags.contains(tag) })
+        } while (fetchedChampions.isNotEmpty())
+
+        return allChampions
     }
 }

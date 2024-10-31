@@ -69,69 +69,72 @@ fun AllItemsActivity(navController: NavHostController, viewModel: ItemViewModel)
                     modifier = Modifier.fillMaxSize()
                 )
 
-                if (isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        contentPadding = PaddingValues(8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(itemList) { item ->
-                            var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
-                            LaunchedEffect(item.image.full) {
-                                imageBitmap = withContext(Dispatchers.IO) {
-                                    loadImageFromUrl("https://ddragon.leagueoflegends.com/cdn/14.20.1/img/item/${item.image.full}")
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    contentPadding = PaddingValues(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(itemList) { item ->
+                        var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
+                        LaunchedEffect(item.image.full) {
+                            imageBitmap = withContext(Dispatchers.IO) {
+                                loadImageFromUrl(item.image.full)
+                            }
+                        }
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                                .border(width = 2.dp, color = FeraDemais)
+                                .clickable {
+                                    navController.navigate("itemDetail/${item.id}")
+                                },
+                        ) {
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                imageBitmap?.let {
+                                    Image(
+                                        bitmap = it.asImageBitmap(),
+                                        contentDescription = null,
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(16.dp),
+                                    verticalArrangement = Arrangement.Bottom
+                                ) {
+                                    Text(
+                                        text = item.name,
+                                        color = GoldLol,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = "Preço: ${item.gold.total}",
+                                        color = GoldLol,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text(
+                                        text = item.tags.joinToString(", "),
+                                        color = GoldLol,
+                                    )
                                 }
                             }
-                            Card(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(200.dp)
-                                    .border(width = 2.dp, color = FeraDemais)
-                                    .clickable {
-                                        viewModel.getItemById(item.id)
-                                        Log.d("ItemActivity", item.id)
-                                        navController.navigate("itemDetail/${item.id}")
-                                    },
-                            ) {
-                                Box(modifier = Modifier.fillMaxSize()) {
-                                    imageBitmap?.let {
-                                        Image(
-                                            bitmap = it.asImageBitmap(),
-                                            contentDescription = null,
-                                            modifier = Modifier.fillMaxSize(),
-                                            contentScale = ContentScale.Crop
-                                        )
-                                    }
-                                    Column(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .padding(16.dp),
-                                        verticalArrangement = Arrangement.Bottom
-                                    ) {
-                                        Text(
-                                            text = item.name,
-                                            color = GoldLol,
-                                            fontWeight = FontWeight.Bold,
-                                        )
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(
-                                            text = "Preço: ${item.gold.total}",
-                                            color = GoldLol,
-                                            fontWeight = FontWeight.Bold,
-                                        )
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(
-                                            text = item.tags.joinToString(", "),
-                                            color = GoldLol,
-                                        )
-                                    }
-                                }
+                        }
+                    }
+                    item {
+                        if (isLoading) {
+                            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                        } else {
+                            LaunchedEffect(Unit) {
+                                viewModel.fetchItems()
                             }
                         }
                     }
@@ -140,3 +143,4 @@ fun AllItemsActivity(navController: NavHostController, viewModel: ItemViewModel)
         }
     )
 }
+

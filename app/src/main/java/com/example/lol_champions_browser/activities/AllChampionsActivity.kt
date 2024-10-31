@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -37,17 +38,24 @@ import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
 
-
 @SuppressLint("DiscouragedApi")
 @Composable
 fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController, viewModel: ChampionViewModel) {
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
+    var currentPage by remember { mutableIntStateOf(0) }
+    var isLoading by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
-        championList = withContext(Dispatchers.IO) {
-            RemoteApi(context).getAllChampions()
+    LaunchedEffect(currentPage) {
+        isLoading = true
+        val newChampions = withContext(Dispatchers.IO) {
+            RemoteApi(context).getAllChampions(currentPage)
         }
+        if (newChampions.isNotEmpty()) {
+            championList = championList + newChampions
+            currentPage++
+        }
+        isLoading = false
     }
 
     SystemBarColor(SuperBlue)
@@ -93,7 +101,6 @@ fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostCo
                                 .height(200.dp)
                                 .border(width = 2.dp, color = FeraDemais)
                                 .clickable {
-
                                     viewModel.selectChampion(champion)
                                     navController.navigate("championDetail")
                                 },
@@ -126,6 +133,16 @@ fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostCo
                                         fontWeight = FontWeight.Bold,
                                     )
                                 }
+                            }
+                        }
+                    }
+
+                    item {
+                        if (isLoading) {
+                            CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                        } else {
+                            LaunchedEffect(Unit) {
+                                currentPage++
                             }
                         }
                     }
