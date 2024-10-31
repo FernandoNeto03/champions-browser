@@ -36,7 +36,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build and run tests
-        run: ./gradlew build --stacktrace
+        run: ./gradlew build --warning-mode none --stacktrace --info
+
 
       - name: Lint check
         run: ./gradlew lint --stacktrace
