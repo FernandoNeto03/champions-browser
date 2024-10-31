@@ -8,7 +8,10 @@ import com.example.lol_champions_browser.activities.TeamDisplay
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import org.junit.Rule
+import org.junit.experimental.runners.Enclosed
+import org.junit.runner.RunWith
 
+@RunWith(Enclosed::class)
 class DrawTeamActivityTest {
 
     @get:Rule
@@ -92,10 +95,11 @@ class DrawTeamActivityTest {
             TeamDisplay(fakeChampions)
         }
 
+        composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Ashe").assertExists()
         composeTestRule.onNodeWithText("Garen").assertExists()
     }
-}
+
 
 class ShareTeamsTest {
 
@@ -259,5 +263,6 @@ class ShareTeamsTest {
             Equipe 1: $team1Names
             Equipe 2: $team2Names
         """.trimIndent()
+    }
     }
 }
