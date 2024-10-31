@@ -7,6 +7,15 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+.idea/compiler.xml
+.idea/deploymentTargetSelector.xml
+.idea/misc.xml
+gradle/android
+gradle/caches
+gradle/daemon
+gradle/jdks
+gradle/native
+gradle/wrapper/dists
 .idea/runConfigurations.xml
 .DS_Store
 /build
