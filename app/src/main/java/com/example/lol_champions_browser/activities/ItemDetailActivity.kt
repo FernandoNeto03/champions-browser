@@ -1,7 +1,8 @@
 package com.example.lol_champions_browser.activities
+
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,7 +10,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -17,33 +20,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.ui.theme.GoldLol
 import com.example.lol_champions_browser.ui.theme.SuperBlue
+import com.example.lol_champions_browser.viewmodel.ItemViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import androidx.compose.ui.platform.LocalContext
-import com.example.lol_champions_browser.viewmodel.ItemViewModel
 
 @Composable
-fun ItemDetailActivity(modifier: Modifier = Modifier, itemId: String, viewModel: ItemViewModel) {
-    val context = LocalContext.current
-    val item = viewModel.getItemById(itemId)
-    Log.d("ItemDetailActivity", "Item selecionado: ${item?.id ?: "Nenhum item selecionado"}")
-    SystemBarColor(SuperBlue)
+fun ItemDetailActivity(
+    modifier: Modifier = Modifier,
+    itemId: String,
+    itemViewModel: ItemViewModel
+) {
+    val item = itemViewModel.getItemById(itemId)
     var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
+
     item?.let { itm ->
         LaunchedEffect(itm.image.full) {
             imageBitmap = withContext(Dispatchers.IO) {
-                loadImageFromUrl("https://ddragon.leagueoflegends.com/cdn/14.20.1/img/item/${itm.image.full}")
+                loadImageFromUrl(itm.image.full)
             }
         }
     }
+
     Scaffold(
         topBar = {
             TopBarComponent(text = "Detalhes do Item")
@@ -57,6 +59,7 @@ fun ItemDetailActivity(modifier: Modifier = Modifier, itemId: String, viewModel:
                     .padding(16.dp)
                     .background(Color.White)
             ) {
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -64,8 +67,7 @@ fun ItemDetailActivity(modifier: Modifier = Modifier, itemId: String, viewModel:
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Card(
-                        modifier = Modifier
-                            .size(120.dp),
+                        modifier = Modifier.size(120.dp),
                         shape = RoundedCornerShape(12.dp),
                     ) {
                         imageBitmap?.let {
@@ -97,6 +99,7 @@ fun ItemDetailActivity(modifier: Modifier = Modifier, itemId: String, viewModel:
                         )
                     }
                 }
+
                 Text(
                     text = itm.description,
                     fontSize = 16.sp,
@@ -104,12 +107,14 @@ fun ItemDetailActivity(modifier: Modifier = Modifier, itemId: String, viewModel:
                     textAlign = TextAlign.Justify,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
+
                 Text(
                     text = "Tags: ${itm.tags.joinToString(", ")}",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Light,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
+
                 Text(
                     text = "Detalhes do Preço:",
                     fontSize = 18.sp,
@@ -145,6 +150,7 @@ fun ItemDetailActivity(modifier: Modifier = Modifier, itemId: String, viewModel:
         }
     }
 }
+
 private fun loadImageFromUrl(url: String): Bitmap? {
     return try {
         val connection = URL(url).openConnection() as HttpURLConnection
@@ -153,6 +159,7 @@ private fun loadImageFromUrl(url: String): Bitmap? {
         val inputStream = connection.inputStream
         BitmapFactory.decodeStream(inputStream)
     } catch (e: Exception) {
+        Log.e("ItemDetailActivity", "Error loading image: ${e.message}")
         null
     }
 }

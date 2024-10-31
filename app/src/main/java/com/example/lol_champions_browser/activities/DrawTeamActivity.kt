@@ -29,6 +29,7 @@ import com.example.lol_champions_browser.networking.RemoteApi
 import com.example.lol_champions_browser.ui.theme.FeraDemais
 import com.example.lol_champions_browser.ui.theme.GoldLol
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
@@ -49,25 +50,34 @@ private fun loadImageFromUrl(url: String): Bitmap? {
 @Composable
 fun DrawTeamActivity(navController: NavHostController, context: Context) {
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
+    var currentPage by remember { mutableIntStateOf(0) }
+    var isLoading by remember { mutableStateOf(false) }
     var team1 by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
     var team2 by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
 
     val teamOne = stringResource(id = R.string.teamOne)
     val teamTwo = stringResource(id = R.string.teamTwo)
+    val coroutineScope = rememberCoroutineScope()
 
 
-    fun shuffleTeams() {
-        if (championList.isNotEmpty()) {
-            val shuffledChampions = championList.shuffled(Random)
+    suspend fun shuffleTeams() {
+        isLoading = true
+
+        val newChampions = withContext(Dispatchers.IO) {
+            RemoteApi(context).getAllChampions(currentPage)
+        }
+
+        if (newChampions.isNotEmpty()) {
+            val shuffledChampions = newChampions.shuffled(Random)
             team1 = shuffledChampions.take(5)
             team2 = shuffledChampions.drop(5).take(5)
+            championList = championList + newChampions
+            currentPage++
         }
+        isLoading = false
     }
 
     LaunchedEffect(Unit) {
-        championList = withContext(Dispatchers.IO) {
-            RemoteApi(context).getAllChampions()
-        }
         shuffleTeams()
     }
 
@@ -135,7 +145,11 @@ fun DrawTeamActivity(navController: NavHostController, context: Context) {
                         .align(Alignment.Center)
                         .padding(8.dp)
                         .size(32.dp)
-                        .clickable { shuffleTeams() }
+                        .clickable {
+                            coroutineScope.launch {
+                                shuffleTeams()
+                            }
+                        }
                 )
 
                 Column(
