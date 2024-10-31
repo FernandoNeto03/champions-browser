@@ -22,7 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.lol_champions_browser.R
 import com.example.lol_champions_browser.viewmodel.ChampionViewModel
@@ -44,14 +43,11 @@ import java.net.URL
 fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController, viewModel: ChampionViewModel) {
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
     val context = LocalContext.current
-//    var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
 
     LaunchedEffect(Unit) {
         championList = withContext(Dispatchers.IO) {
             RemoteApi(context).getAllChampions()
         }
-//        if( ActivityCompat.checkSelfPermission(context, POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
-//        }
     }
 
     SystemBarColor(SuperBlue)
