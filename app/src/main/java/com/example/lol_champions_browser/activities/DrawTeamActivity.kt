@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -54,16 +55,20 @@ fun DrawTeamActivity(navController: NavHostController, context: Context) {
     val teamOne = stringResource(id = R.string.teamOne)
     val teamTwo = stringResource(id = R.string.teamTwo)
 
-    LaunchedEffect(Unit) {
-        championList = withContext(Dispatchers.IO) {
-            RemoteApi(context).getAllChampions()
-        }
 
+    fun shuffleTeams() {
         if (championList.isNotEmpty()) {
             val shuffledChampions = championList.shuffled(Random)
             team1 = shuffledChampions.take(5)
             team2 = shuffledChampions.drop(5).take(5)
         }
+    }
+
+    LaunchedEffect(Unit) {
+        championList = withContext(Dispatchers.IO) {
+            RemoteApi(context).getAllChampions()
+        }
+        shuffleTeams()
     }
 
     Scaffold(
@@ -83,46 +88,86 @@ fun DrawTeamActivity(navController: NavHostController, context: Context) {
                     modifier = Modifier.fillMaxSize()
                 )
 
-                Column(
+                Row(
                     modifier = Modifier
                         .fillMaxSize()
+                        .padding(8.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = teamOne,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(8.dp),
+                            color = GoldLol
+                        )
+                        TeamDisplay(team = team1)
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = teamTwo,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(8.dp),
+                            color = GoldLol
+                        )
+                        TeamDisplay(team = team2)
+                    }
+                }
+
+                Image(
+                    painter = painterResource(id = R.drawable.buttonrefreshover),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(8.dp)
+                        .size(32.dp)
+                        .clickable { shuffleTeams() }
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = teamOne,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(16.dp),
-                        color = GoldLol
-                    )
-                    TeamDisplay(team = team1)
-
-                    Spacer(modifier = Modifier.height(32.dp))
-
                     Button(
                         onClick = {
                             shareTeams(context, team1, team2, teamOne, teamTwo)
-                        },
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                        }
                     ) {
                         Text(stringResource(id = R.string.shareTeams))
                     }
-
-                    Spacer(modifier = Modifier.height(32.dp))
-
-                    Text(
-                        text = teamTwo,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(16.dp),
-                        color = GoldLol
-                    )
-                    TeamDisplay(team = team2)
                 }
             }
         }
     )
 }
 
+fun getLaneIconResource(index: Int): Int {
+    return when (index) {
+        0 -> R.drawable.top
+        1 -> R.drawable.jungle
+        2 -> R.drawable.middle
+        3 -> R.drawable.bottom
+        4 -> R.drawable.utility
+        else -> R.drawable.iconx
+    }
+}
 
 @Composable
 fun TeamDisplay(team: List<ChampionModel>) {
@@ -130,30 +175,15 @@ fun TeamDisplay(team: List<ChampionModel>) {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
-        ) {
-            team.take(3).forEach { champion ->
-                ChampionCard(champion)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
-        ) {
-            team.drop(3).forEach { champion ->
-                ChampionCard(champion)
-            }
+        team.forEachIndexed { index, champion ->
+            ChampionCard(champion = champion, laneIcon = getLaneIconResource(index))
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
 @Composable
-fun ChampionCard(champion: ChampionModel) {
+fun ChampionCard(champion: ChampionModel, laneIcon: Int) {
     var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
 
     LaunchedEffect(champion.icon) {
@@ -162,36 +192,43 @@ fun ChampionCard(champion: ChampionModel) {
         }
     }
 
-    Card(
-        modifier = Modifier
-            .size(100.dp)
-            .border(width = 2.dp, color = FeraDemais)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(8.dp)
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            imageBitmap?.let {
-                Image(
-                    bitmap = it.asImageBitmap(),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            }
+        Card(
+            modifier = Modifier
+                .size(75.dp)
+                .border(width = 2.dp, color = FeraDemais)
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                imageBitmap?.let {
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = champion.name,
-                    color = GoldLol,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                }
             }
         }
+
+        Image(
+            painter = painterResource(id = laneIcon),
+            contentDescription = null,
+            modifier = Modifier
+                .size(32.dp)
+                .padding(top = 4.dp)
+        )
     }
 }
 
