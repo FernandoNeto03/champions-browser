@@ -42,7 +42,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
 
         composable("drawTeam") {
-            DrawTeamActivity(navController = navController, context = LocalContext.current)
+            DrawTeamActivity(navController = navController, context = LocalContext.current, itemViewModel)
         }
 
         composable("allItems") {

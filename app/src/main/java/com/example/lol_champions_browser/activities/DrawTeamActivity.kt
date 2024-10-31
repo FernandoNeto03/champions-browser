@@ -51,7 +51,7 @@ private fun loadImageFromUrl(url: String): Bitmap? {
 }
 
 @Composable
-fun DrawTeamActivity(navController: NavHostController, context: Context) {
+fun DrawTeamActivity(navController: NavHostController, context: Context, itemViewModel: ItemViewModel) {
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
     var currentPage by remember { mutableIntStateOf(0) }
     var isLoading by remember { mutableStateOf(false) }
@@ -120,7 +120,7 @@ fun DrawTeamActivity(navController: NavHostController, context: Context) {
                             modifier = Modifier.padding(8.dp),
                             color = GoldLol
                         )
-                        TeamDisplay(team = team1)
+                        TeamDisplay(team = team1, itemViewModel)
                     }
 
                     Spacer(modifier = Modifier.width(8.dp))
@@ -137,7 +137,7 @@ fun DrawTeamActivity(navController: NavHostController, context: Context) {
                             modifier = Modifier.padding(8.dp),
                             color = GoldLol
                         )
-                        TeamDisplay(team = team2)
+                        TeamDisplay(team = team2, itemViewModel)
                     }
                 }
 
@@ -187,13 +187,13 @@ fun getLaneIconResource(index: Int): Int {
 }
 
 @Composable
-fun TeamDisplay(team: List<ChampionModel>) {
+fun TeamDisplay(team: List<ChampionModel>, itemViewModel: ItemViewModel) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         team.forEachIndexed { index, champion ->
-            ChampionCard(champion = champion, laneIcon = getLaneIconResource(index), itemViewModel = ItemViewModel())
+            ChampionCard(champion = champion, laneIcon = getLaneIconResource(index), itemViewModel )
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
@@ -209,6 +209,7 @@ fun ChampionCard(
     var showItemsDialog by remember { mutableStateOf(false) }
     var randomItems by remember { mutableStateOf<List<ItemModel>>(emptyList()) }
 
+    // Load champion image
     LaunchedEffect(champion.icon) {
         imageBitmap = withContext(Dispatchers.IO) {
             loadImageFromUrl(champion.icon)
@@ -251,25 +252,63 @@ fun ChampionCard(
     }
 
     if (showItemsDialog) {
-        AlertDialog(
-            onDismissRequest = { showItemsDialog = false },
-            title = { Text("Itens de ${champion.name}") },
-            text = {
-                Column {
-                    randomItems.forEach { item ->
-                        Text(item.name)
-                    }
-                }
-            },
-            confirmButton = {
-                Button(onClick = { showItemsDialog = false }) {
-                    Text("Fechar")
-                }
-            }
+        ItemImagesDialog(
+            items = randomItems,
+            onDismiss = { showItemsDialog = false }
         )
     }
 }
 
+@Composable
+fun ItemImagesDialog(items: List<ItemModel>, onDismiss: () -> Unit) {
+    val itemImages = remember { mutableStateListOf<Bitmap?>() }
+
+    // Load images for each item
+    LaunchedEffect(items) {
+        itemImages.clear()
+        items.forEach { _ -> itemImages.add(null) }
+        items.forEachIndexed { index, item ->
+            val bitmap = withContext(Dispatchers.IO) {
+                loadImageFromUrl(item.image.full)
+            }
+            itemImages[index] = bitmap
+        }
+    }
+
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        title = { Text("Itens") },
+        text = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                items.forEachIndexed { index, item ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(4.dp)
+                    ) {
+                        itemImages.getOrNull(index)?.let { bitmap ->
+                            Image(
+                                bitmap = bitmap.asImageBitmap(),
+                                contentDescription = item.name,
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .padding(end = 8.dp)
+                            )
+                        }
+                        Text(
+                            text = item.name,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(onClick = { onDismiss() }) {
+                Text("Fechar")
+            }
+        }
+    )
+}
 
 fun shareTeams(context: Context, team1: List<ChampionModel>, team2: List<ChampionModel>, teamOne: String, teamTwo: String) {
     val team1Names = team1.joinToString(", ") { it.name }

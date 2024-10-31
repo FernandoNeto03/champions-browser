@@ -16,6 +16,7 @@ gradle/daemon
 gradle/jdks
 gradle/native
 gradle/wrapper/dists
+gradle/kotlin-profile
 .idea/runConfigurations.xml
 .DS_Store
 /build

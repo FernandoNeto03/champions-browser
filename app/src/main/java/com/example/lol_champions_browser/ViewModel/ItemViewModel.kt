@@ -1,20 +1,17 @@
     package com.example.lol_champions_browser.viewmodel
 
-    import android.util.Log
     import androidx.compose.runtime.State
     import androidx.compose.runtime.getValue
     import androidx.compose.runtime.mutableStateOf
     import androidx.compose.runtime.setValue
     import androidx.lifecycle.ViewModel
     import androidx.lifecycle.viewModelScope
-    import com.example.lol_champions_browser.model.ChampionModel
     import com.example.lol_champions_browser.model.ItemModel
     import com.example.lol_champions_browser.model.ItemGold
     import com.example.lol_champions_browser.model.ItemImage
     import kotlinx.coroutines.launch
     import kotlinx.coroutines.Dispatchers
     import kotlinx.coroutines.withContext
-    import org.json.JSONObject
     import java.net.HttpURLConnection
     import java.net.URL
 
@@ -51,7 +48,7 @@
             return if (_items.value.size >= 6) {
                 _items.value.shuffled().take(6)
             } else {
-                emptyList() // Retorna uma lista vazia caso não haja itens suficientes
+                emptyList()
             }
         }
 
