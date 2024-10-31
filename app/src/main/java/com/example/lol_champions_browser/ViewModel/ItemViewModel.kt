@@ -47,6 +47,14 @@
             }
         }
 
+        fun getRandomItemsForChampion(): List<ItemModel> {
+            return if (_items.value.size >= 6) {
+                _items.value.shuffled().take(6)
+            } else {
+                emptyList() // Retorna uma lista vazia caso não haja itens suficientes
+            }
+        }
+
         private suspend fun fetchItemsFromApi(page: Int): List<ItemModel> {
             val apiUrl = "http://girardon.com.br:3001/items?page=$page"
             val connection = URL(apiUrl).openConnection() as HttpURLConnection

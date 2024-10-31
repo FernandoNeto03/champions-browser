@@ -115,12 +115,7 @@ fun AllItemsActivity(navController: NavHostController, viewModel: ItemViewModel)
                                         fontWeight = FontWeight.Bold,
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text = "Preço: ${item.gold.total}",
-                                        color = GoldLol,
-                                        fontWeight = FontWeight.Bold,
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
+
                                     Text(
                                         text = item.tags.joinToString(", "),
                                         color = GoldLol,

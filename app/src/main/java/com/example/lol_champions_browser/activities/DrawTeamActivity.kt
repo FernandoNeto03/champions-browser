@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
@@ -25,9 +26,11 @@ import androidx.navigation.NavHostController
 import com.example.lol_champions_browser.R
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.model.ChampionModel
+import com.example.lol_champions_browser.model.ItemModel
 import com.example.lol_champions_browser.networking.RemoteApi
 import com.example.lol_champions_browser.ui.theme.FeraDemais
 import com.example.lol_champions_browser.ui.theme.GoldLol
+import com.example.lol_champions_browser.viewmodel.ItemViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -190,15 +193,21 @@ fun TeamDisplay(team: List<ChampionModel>) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         team.forEachIndexed { index, champion ->
-            ChampionCard(champion = champion, laneIcon = getLaneIconResource(index))
+            ChampionCard(champion = champion, laneIcon = getLaneIconResource(index), itemViewModel = ItemViewModel())
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
 @Composable
-fun ChampionCard(champion: ChampionModel, laneIcon: Int) {
+fun ChampionCard(
+    champion: ChampionModel,
+    laneIcon: Int,
+    itemViewModel: ItemViewModel
+) {
     var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var showItemsDialog by remember { mutableStateOf(false) }
+    var randomItems by remember { mutableStateOf<List<ItemModel>>(emptyList()) }
 
     LaunchedEffect(champion.icon) {
         imageBitmap = withContext(Dispatchers.IO) {
@@ -208,7 +217,12 @@ fun ChampionCard(champion: ChampionModel, laneIcon: Int) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable {
+                randomItems = itemViewModel.getRandomItemsForChampion()
+                showItemsDialog = true
+            }
     ) {
         Card(
             modifier = Modifier
@@ -224,15 +238,6 @@ fun ChampionCard(champion: ChampionModel, laneIcon: Int) {
                         contentScale = ContentScale.Crop
                     )
                 }
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp),
-                    verticalArrangement = Arrangement.Bottom,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                }
             }
         }
 
@@ -244,7 +249,27 @@ fun ChampionCard(champion: ChampionModel, laneIcon: Int) {
                 .padding(top = 4.dp)
         )
     }
+
+    if (showItemsDialog) {
+        AlertDialog(
+            onDismissRequest = { showItemsDialog = false },
+            title = { Text("Itens de ${champion.name}") },
+            text = {
+                Column {
+                    randomItems.forEach { item ->
+                        Text(item.name)
+                    }
+                }
+            },
+            confirmButton = {
+                Button(onClick = { showItemsDialog = false }) {
+                    Text("Fechar")
+                }
+            }
+        )
+    }
 }
+
 
 fun shareTeams(context: Context, team1: List<ChampionModel>, team2: List<ChampionModel>, teamOne: String, teamTwo: String) {
     val team1Names = team1.joinToString(", ") { it.name }

@@ -108,12 +108,6 @@ fun ItemDetailActivity(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                Text(
-                    text = "Tags: ${itm.tags.joinToString(", ")}",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Light,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
 
                 Text(
                     text = "Detalhes do Preço:",
