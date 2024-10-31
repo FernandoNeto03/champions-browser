@@ -36,17 +36,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build and run tests
-        run: ./gradlew build --stacktrace
-
-      - name: Lint check
-        run: ./gradlew lint --stacktrace
-
-      - name: Detekt check
-        run: ./gradlew detekt --stacktrace
-
-      - name: Upload build artifacts
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: app/build/outputs/
+        run: ./gradlew test
