@@ -11,7 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.lol_champions_browser.model.ChampionModel
 
-class ChampionViewModel : ViewModel() {
+class ChampionsViewModel : ViewModel() {
     var selectedChampion by mutableStateOf<ChampionModel?>(null)
     private var mediaPlayer: MediaPlayer? = null
 

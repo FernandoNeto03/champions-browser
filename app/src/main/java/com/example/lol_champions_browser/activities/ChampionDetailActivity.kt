@@ -40,20 +40,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lol_champions_browser.R
-import com.example.lol_champions_browser.viewmodel.ChampionViewModel
 import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.ui.theme.GoldLol
 import com.example.lol_champions_browser.ui.theme.SuperBlue
+import com.example.lol_champions_browser.viewmodel.ChampionsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URL
 
 @Composable
-fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionViewModel) {
+fun ChampionDetailActivity(modifier: Modifier = Modifier, viewModel: ChampionsViewModel) {
     val champion = viewModel.selectedChampion
     val context = LocalContext.current
     var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }

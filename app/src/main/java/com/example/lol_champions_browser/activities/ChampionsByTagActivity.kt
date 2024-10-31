@@ -20,16 +20,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.lol_champions_browser.R
-import com.example.lol_champions_browser.viewmodel.ChampionViewModel
+
 import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.model.ChampionModel
 import com.example.lol_champions_browser.ui.theme.FeraDemais
 import com.example.lol_champions_browser.ui.theme.GoldLol
 import com.example.lol_champions_browser.ui.theme.SuperBlue
+import com.example.lol_champions_browser.viewmodel.ChampionsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
@@ -40,7 +40,7 @@ fun ChampionsByTagActivity(
     tag: String,
     modifier: Modifier,
     navController: NavHostController,
-    viewModel: ChampionViewModel
+    viewModel: ChampionsViewModel
 ) {
     val context = LocalContext.current
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }

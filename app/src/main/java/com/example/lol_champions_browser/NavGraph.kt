@@ -11,18 +11,18 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.lol_champions_browser.activities.AllChampionsActivity
 import com.example.lol_champions_browser.activities.AllItemsActivity
-import com.example.lol_champions_browser.viewmodel.ChampionViewModel
 import com.example.lol_champions_browser.activities.ChampionDetailActivity
 import com.example.lol_champions_browser.activities.ChampionsByTagActivity
 import com.example.lol_champions_browser.activities.DrawTeamActivity
 import com.example.lol_champions_browser.activities.HomeActivity
 import com.example.lol_champions_browser.activities.ItemDetailActivity
+import com.example.lol_champions_browser.viewmodel.ChampionsViewModel
 import com.example.lol_champions_browser.viewmodel.ItemViewModel
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    val championViewModel: ChampionViewModel = viewModel()
+    val championViewModel: ChampionsViewModel = viewModel()
     val itemViewModel: ItemViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "home", builder = {

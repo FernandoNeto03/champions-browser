@@ -25,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.lol_champions_browser.R
-import com.example.lol_champions_browser.viewmodel.ChampionViewModel
 import com.example.lol_champions_browser.components.SystemBarColor
 import com.example.lol_champions_browser.components.TopBarComponent
 import com.example.lol_champions_browser.model.ChampionModel
@@ -33,6 +32,7 @@ import com.example.lol_champions_browser.networking.RemoteApi
 import com.example.lol_champions_browser.ui.theme.FeraDemais
 import com.example.lol_champions_browser.ui.theme.GoldLol
 import com.example.lol_champions_browser.ui.theme.SuperBlue
+import com.example.lol_champions_browser.viewmodel.ChampionsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
@@ -40,7 +40,7 @@ import java.net.URL
 
 @SuppressLint("DiscouragedApi")
 @Composable
-fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController, viewModel: ChampionViewModel) {
+fun AllChampionsActivity(modifier: Modifier = Modifier, navController: NavHostController, viewModel: ChampionsViewModel) {
     var championList by remember { mutableStateOf<List<ChampionModel>>(emptyList()) }
     var currentPage by remember { mutableIntStateOf(0) }
     var isLoading by remember { mutableStateOf(false) }
