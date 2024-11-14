@@ -24,3 +24,4 @@ gradle/kotlin-profile
 .externalNativeBuild
 .cxx
 local.properties
+/champions-browser-automation/node_modules
