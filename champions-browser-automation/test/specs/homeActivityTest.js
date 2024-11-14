@@ -14,7 +14,8 @@ describe('Teste de Interação com o App', () => {
       await driver.back();
 
       await driver.back();
-
+    });
+    it('Deve selecionar o botao "Champions by Role", escolher a tag "Tank" e selecionar o Alistar ', async () => {
       //All Champions by Role
       const viewByRoleButton = await $('android=new UiSelector().text("View champions by role")');
       await viewByRoleButton.waitForDisplayed({ timeout: 10000 });
@@ -36,7 +37,8 @@ describe('Teste de Interação com o App', () => {
       await driver.back();
 
       await driver.back();
-    
+    })
+    it('Deve selecionar o botao "Team Drawer" e compartilhar o time', async () => {
       //Team Drawer
       const teamDrawerButton = await $(`android=new UiSelector().text("Team Drawer")`);
       await teamDrawerButton.waitForDisplayed({ timeout: 5000 });
@@ -50,11 +52,32 @@ describe('Teste de Interação com o App', () => {
       await browser.pause(4000);
 
       await driver.back();
-
+      
       //Refresh Teams
-      const refreshTeamsButton = await $(`//android.widget.ImageView[@resource-id='com.example.lol_champions_browser:id/buttonrefreshover']`);
-      await refreshTeamsButton.waitForDisplayed({ timeout: 5000 });
-      await refreshTeamsButton.click();
+      // const refreshTeamsButton = await $(`~buttonrefreshover`);
+      // await refreshTeamsButton.waitForDisplayed({ timeout: 5000 });
+      // await refreshTeamsButton.click();
+      // await browser.pause(4000);
+      
+      await driver.back();
+      
+    });
+
+    it('Deve selecionar o botao "View All Items" e selecionar o primeiro card', async () => {
+
+      //Items Button
+      const itemsButton = await $(`android=new UiSelector().text("View all items")`);
+      await itemsButton.waitForDisplayed({ timeout: 5000 });
+      await itemsButton.click();
       await browser.pause(4000);
-  });
+      
+      //Items Card Button
+      const itemCardButton = await $(`android=new UiSelector().text("Boots of Speed")`);
+      await itemCardButton.waitForDisplayed({ timeout: 5000 });
+      await itemCardButton.click();
+      await browser.pause(4000);
+      
+      await driver.back();
+
+    });
 });
