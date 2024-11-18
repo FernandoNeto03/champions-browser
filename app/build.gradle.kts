@@ -64,13 +64,15 @@ dependencies {
     implementation(libs.androidx.foundation.layout.android)
 
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.ui.test.junit4.android)
+    testImplementation(libs.testng)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     testImplementation(libs.junit)
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation ("org.mockito:mockito-core:4.11.0")
-    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.1.0")
-    testImplementation ("io.mockk:mockk:1.13.2")
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockito.core)
+    testImplementation (libs.mockito.kotlin)
+    testImplementation (libs.mockk)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -15,13 +15,11 @@ class ItemViewModelGetRandomTest {
 
     @Test
     fun `getRandomItemsForChampion returns 6 random items when sufficient items are available`() = runTest {
-        // Mock do repositório (não será usado neste teste)
+
         val mockRepository = mockk<ItemRepository>()
 
-        // Cria a ViewModel com o mock do repositório
         val viewModel = ItemViewModel(mockRepository)
 
-        // Lista simulada de itens
         val mockItems = List(10) { index ->
             ItemModel(
                 id = "$index",
@@ -33,16 +31,13 @@ class ItemViewModelGetRandomTest {
             )
         }
 
-        // Atualiza diretamente o estado interno `_items`
         viewModel::class.java.getDeclaredField("_items").apply {
             isAccessible = true
             set(viewModel, mutableStateOf(mockItems))
         }
 
-        // Obtém 6 itens aleatórios
         val randomItems = viewModel.getRandomItemsForChampion()
 
-        // Verifica se o número de itens retornados é 6
         assertEquals(6, randomItems.size)
     }
 }

@@ -11,13 +11,11 @@ class ItemViewModelTest {
 
     @Test
     fun `initial state is correct`() {
-        // Mock do repositório
+
         val mockRepository = mockk<ItemRepository>()
 
-        // Cria a ViewModel com o mock do repositório
         val viewModel = ItemViewModel(mockRepository)
 
-        // Verifica o estado inicial da ViewModel
         assertEquals(emptyList<ItemModel>(), viewModel.items.value)
         assertEquals(false, viewModel.isLoading.value)
     }
