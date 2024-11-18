@@ -9,21 +9,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.lol_champions_browser.activities.AllChampionsActivity
-import com.example.lol_champions_browser.activities.AllItemsActivity
-import com.example.lol_champions_browser.activities.ChampionDetailActivity
-import com.example.lol_champions_browser.activities.ChampionsByTagActivity
-import com.example.lol_champions_browser.activities.DrawTeamActivity
-import com.example.lol_champions_browser.activities.HomeActivity
-import com.example.lol_champions_browser.activities.ItemDetailActivity
+import com.example.lol_champions_browser.activities.*
+import com.example.lol_champions_browser.data.ItemRepository
+import com.example.lol_champions_browser.data.ItemRepositoryImpl
 import com.example.lol_champions_browser.viewmodel.ChampionsViewModel
 import com.example.lol_champions_browser.viewmodel.ItemViewModel
+import com.example.lol_champions_browser.viewmodel.ItemViewModelFactory
 
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val championViewModel: ChampionsViewModel = viewModel()
-    val itemViewModel: ItemViewModel = viewModel()
+
+    // Forneça o repositório necessário para a fábrica de ItemViewModel
+    val itemRepository = ItemRepositoryImpl()
+    val itemViewModel: ItemViewModel = viewModel(factory = ItemViewModelFactory(itemRepository))
 
     NavHost(navController = navController, startDestination = "home", builder = {
         composable(route = "allChampions") {
@@ -46,7 +46,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
 
         composable("allItems") {
-        AllItemsActivity(navController = navController, viewModel = itemViewModel)
+            AllItemsActivity(navController = navController, viewModel = itemViewModel)
         }
 
         composable(
@@ -60,6 +60,5 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
     })
 }
-
 
 
